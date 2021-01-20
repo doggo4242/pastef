@@ -2,6 +2,7 @@ import discord
 import requests
 import json
 import re
+import formatter
 
 client = discord.Client()
 channels = []
@@ -23,7 +24,10 @@ async def on_message(message):
 		if blocks[i].count('\n') >= 14:
 			ext='.'+blocks[i][:blocks[i].find('\n')]
 			ext='' if ext == '.' else ext
-			req = requests.post('https://pastecord.com/documents',data=blocks[i])
+			formatted=blocks[i][blocks[i].find('\n')+1:]
+			formatted=formatter.format(formatted,ext[1:]) if ext != '' else formatted
+#			print(formatted)
+			req = requests.post('https://pastecord.com/documents',data=formatted)
 			msg = msg.replace(blocks[i],'https://pastecord.com/'+req.json()['key']+ext)
 	if msg != message.content:
 		await message.delete()
