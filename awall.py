@@ -6,32 +6,30 @@ import formatter
 
 client = discord.Client()
 channels = []
-roles = []
 token = None
+roles = []
+emojis = [b'\xf0\x9f\x93\x8e',b'\xe2\x9c\x92\xef\xb8\x8f',b'\xf0\x9f\x96\x8b\xef\xb8\x8f',b'\xf0\x9f\x96\x8a\xef\xb8\x8f']
 
 @client.event
 async def on_ready():
 	print('ready')
 
 @client.event
-async def on_message(message):
-	if message.author == client.user or str(message.channel.id) not in channels or str(message.author.id) in roles:
+async def on_reaction_add(reaction,user):
+	if str(reaction.message.channel.id) not in channels or bool(set(roles) & set(user.roles)) or reaction.emoji.encode('utf-8') not in emojis:
 		return
-
-	msg = message.content.replace('```','')
-	blocks=re.findall(r"```([\w\W]+?)```",message.content)
+	msg = []
+	blocks=re.findall(r"```([\w\W]+?)```",reaction.message.content)
 	for i in range(len(blocks)):
 		if blocks[i].count('\n') >= 14:
 			ext='.'+blocks[i][:blocks[i].find('\n')]
 			ext='' if ext == '.' else ext
 			formatted=blocks[i][blocks[i].find('\n')+1:]
-			formatted=formatter.format(formatted,ext[1:]) if ext != '' else formatted
-#			print(formatted)
+			if reaction.emoji.encode('utf-8') != emojis[0]:#check for paperclip in which case formatter is not run
+				formatted=formatter.format(formatted,ext[1:]) if ext != '' else formatted
 			req = requests.post('https://pastecord.com/documents',data=formatted)
-			msg = msg.replace(blocks[i],'https://pastecord.com/'+req.json()['key']+ext)
-	if msg != message.content:
-		await message.delete()
-		await message.channel.send(message.author.mention+' said:\n'+msg)
+			msg.append('https://pastecord.com/'+req.json()['key']+ext+'\n')
+	await reaction.message.reply(''.join(msg),mention_author=False)
 
 with open('channels.txt') as f:
 	channels=f.read().splitlines()

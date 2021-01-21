@@ -4,11 +4,9 @@ def bstr_to_str(str_lst):
 	final=[]
 	for i in str_lst:
 		final.append(i.decode('utf-8'))
-	print(''.join(final))
 	return ''.join(final)
 
 def format(code,ext):
-	print(ext)
 #	code=code.replace('\'','\\\'')
 	clang = ['c','cpp','java','cs','objc','protobuf']
 	prettier = ['js','javascript','ts','typescript','css','html','json','yaml','jsx']
@@ -41,9 +39,7 @@ def format(code,ext):
 	else:
 		print('exiting')
 		return code
-	print(cmd)
 	res=subprocess.Popen(cmd,stdout=subprocess.PIPE,stdin=subprocess.PIPE,stderr=subprocess.PIPE)
 	res=res.communicate(input=code.encode('utf-8'))[0]
 #	res=subprocess.check_output(res).decode('utf-8')
-	print(res)
 	return res
