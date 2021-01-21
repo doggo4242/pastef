@@ -13,7 +13,7 @@ Download the Dockerfile, then create the required config files in the same direc
 Build the image:
 
 ```
-docker build -t pastef
+docker build . -t pastef
 ```
 
 Done :)
