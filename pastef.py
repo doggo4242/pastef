@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import discord
 import requests
 import json
@@ -6,7 +7,7 @@ import formatter
 import struct
 
 client = discord.Client()
-channels = []
+channels = {}
 token = None
 roles = []
 bin = b'\xf0\x9f\x93\x8e'
@@ -38,7 +39,7 @@ async def on_reaction_add(reaction,user):
 	blocks=re.findall(r"```([\w\W]+?)```",reaction.message.content)
 	for block in blocks:
 		ext='.'+block[:block.find('\n')]
-		ext='' if ext == '.' else ext
+		ext=channels[str(reaction.message.channel.id)] if ext == '.' else ext
 		formatted=block[block.find('\n')+1:]
 		if embytes != bin:#check for paperclip in which case formatter is not run
 			formatted=formatter.format(formatted,ext[1:]) if ext != '' else formatted
@@ -46,13 +47,13 @@ async def on_reaction_add(reaction,user):
 		msg.append('https://pastecord.com/'+req.json()['key']+ext+'\n')
 	await reaction.message.reply(''.join(msg),mention_author=False)
 
-with open('channels.txt') as f:
-	channels=f.read().splitlines()
+with open('/etc/pastef/channels.txt') as f:
+	channels=json.loads(f.read())
 
-with open('whitelist.txt') as f:
+with open('/etc/pastef/whitelist.txt') as f:
 	roles=f.read().splitlines()
 
-with open('token.txt') as f:
+with open('/etc/pastef/token.txt') as f:
 	token=f.read()
 
 client.run(token)
