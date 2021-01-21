@@ -21,7 +21,7 @@ async def on_ready():
 @client.event
 async def on_reaction_add(reaction,user):
 	embytes = reaction.emoji.encode('utf-8')
-	if str(reaction.message.channel.id) not in channels or bool(set(roles) & set(user.roles)) or embytes not in [bin]+format:
+	if str(reaction.message.channel.id) not in channels or bool(set(roles) & set(reaction.message.author.roles)) or embytes not in [bin]+format:
 		return
 
 	await reaction.remove(user)
