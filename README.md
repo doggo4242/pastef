@@ -6,8 +6,6 @@ Docker image coming soon.
 Formatter supports everything clang-format and prettier support, as well as kotlin, python, php, rust, haskell, lua, asm, go, and ruby.
 
 # TODO
-Prevent double reactions
-
 Add tph-specific formatter guessing if none is available.
 
 # Credits
