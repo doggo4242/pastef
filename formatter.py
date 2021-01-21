@@ -9,7 +9,8 @@ def bstr_to_str(str_lst):
 def format(code,ext):
 #	code=code.replace('\'','\\\'')
 	clang = ['c','cpp','java','cs','objc','protobuf']
-	prettier = ['js','javascript','ts','typescript','css','html','json','yaml','jsx']
+	prettier = ['js','javascript','ts','typescript','css','html','json','yaml','jsx','php']
+	cmd = None
 	if ext in clang:
 		cmd='clang-format'
 	elif ext in prettier:
@@ -17,13 +18,11 @@ def format(code,ext):
 			ext='babel'
 		elif ext == 'ts':
 			ext='typescript'
-		cmd='npx prettier --parser '+ext
+		cmd=['npx', 'prettier','--parser',ext]
 	elif ext == 'kt' or ext == 'kotlin':
-		cmd='ktlint --stdin -F'
+		cmd=['ktlint','--stdin','-F']
 	elif ext == 'py' or ext == 'python':
 		cmd='yapf'
-	elif ext == 'php':
-		cmd='phpfmt - | grep -v \"Warning\" | sed \'/./,$!d\''
 	elif ext == 'rs' or ext == 'rust':
 		cmd='rustfmt'
 	elif ext == 'hs' or ext == 'haskell':
@@ -39,7 +38,6 @@ def format(code,ext):
 	else:
 		print('exiting')
 		return code
-	res=subprocess.Popen(cmd,stdout=subprocess.PIPE,stdin=subprocess.PIPE,stderr=subprocess.PIPE)
+	res=subprocess.Popen(cmd,stdout=subprocess.PIPE,stdin=subprocess.PIPE)
 	res=res.communicate(input=code.encode('utf-8'))[0]
-#	res=subprocess.check_output(res).decode('utf-8')
 	return res
