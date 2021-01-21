@@ -2,11 +2,16 @@
 A code formatting and pastebinning discord bot. Formats codeblocks and/or uploads them to a paste service when a message is reacted to with any pen emoji (formats) or a paperclip emoji (pastebins). 
 
 # Usage
-Download the [Dockerfile](https://raw.githubusercontent.com/doggo4242/pastef/main/Dockerfile).
+Download the Dockerfile, then create the required config files.
 
-Create the configuration files in the same directory as the Dockerfile, see [wiki](https://github.com/doggo4242/pastef/wiki) for specifics.
+`token.txt`: contains your bot account token
+
+`whitelist.txt`: contains role ids of roles whose messages should be ignored by the bot.
+
+`channels.json`: contains a dict of json keys/values where the key is the channel id (as a string) of the channels the bot should be active in, and the value is the backup language specifier (accepts discord codeblock specifiers). Put "" for the key if you would not like to use backup language specification.
 
 Build the image:
+
 ```
 docker build -t pastef
 ```
