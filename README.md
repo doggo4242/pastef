@@ -12,7 +12,7 @@ Enter the required info in the config files:
 
 `token.txt`: contains your bot account token
 
-`whitelist.txt`: contains role ids of roles whose messages should be ignored by the bot.
+`whitelist.txt`: contains role ids of roles whose messages should be ignored by the bot (separate with newlines).
 
 `channels.json`: contains a dict of json keys/values where the key is the channel id (as a string) of the channels the bot should be active in, and the value is the backup language specifier (accepts discord codeblock specifiers). Put "" for the key if you would not like to use backup language specification.
 
