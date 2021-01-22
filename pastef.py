@@ -47,7 +47,7 @@ async def on_reaction_add(reaction,user):
 		msg.append('https://pastecord.com/'+req.json()['key']+ext+'\n')
 	await reaction.message.reply(''.join(msg),mention_author=False)
 
-with open('/etc/pastef/channels.txt') as f:
+with open('/etc/pastef/channels.json') as f:
 	channels=json.loads(f.read())
 
 with open('/etc/pastef/whitelist.txt') as f:
