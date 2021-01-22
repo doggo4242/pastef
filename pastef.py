@@ -4,7 +4,6 @@ import requests
 import json
 import re
 import formatter
-import struct
 
 client = discord.Client()
 channels = {}
@@ -25,15 +24,15 @@ async def on_reaction_add(reaction,user):
 		return
 
 	await reaction.remove(user)
-	if len(lastMsgs) >= 2:
-		next(iter(lastMsgs)).pop()
+	if len(lastMsgs) >= 200:
+		del lastMsgs[next(iter(lastMsgs.keys()))]
 	if lastMsgs.get(str(reaction.message.id)) != None:
-		last = struct.unpack('??',lastMsgs.get(str(reaction.message.id)))
+		last = lastMsgs.get(str(reaction.message.id))
 		if (last[0] and last[1]) or not (embytes == bin or last[0]) or not (embytes in format or last[1]):
 			return
-		lastMsgs[str(reaction.message.id)] = struct.pack('??',(embytes == bin or last[0]),(embytes in format or last[1]))
+		lastMsgs[str(reaction.message.id)] = [(embytes == bin or last[0]),(embytes in format or last[1])]
 	else:
-		lastMsgs[str(reaction.message.id)] = struct.pack('??',(embytes == bin),(embytes in format))
+		lastMsgs[str(reaction.message.id)] = [(embytes == bin),(embytes in format)]
 
 	msg = []
 	blocks=re.findall(r"```([\w\W]+?)```",reaction.message.content)
