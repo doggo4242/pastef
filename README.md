@@ -19,7 +19,7 @@ docker build . -t pastef
 Run the container:
 
 ```
-docker run pastef
+docker run -d=true pastef
 ```
 
 Done :)
