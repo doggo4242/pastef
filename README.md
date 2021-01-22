@@ -2,7 +2,13 @@
 A code formatting and pastebinning discord bot. Formats codeblocks and/or uploads them to a paste service when a message is reacted to with any pen emoji (formats) or a paperclip emoji (pastebins). 
 
 # Install & Usage
-Download the Dockerfile, then create the required config files in the same directory as the Dockerfile.
+Clone the repo:
+
+```
+git clone https://github.com/doggo4242/pastef
+```
+
+Enter the required info in the config files:
 
 `token.txt`: contains your bot account token
 
