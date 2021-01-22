@@ -1,7 +1,7 @@
 # pastef
 A code formatting and pastebinning discord bot. Formats codeblocks and/or uploads them to a paste service when a message is reacted to with any pen emoji (formats) or a paperclip emoji (pastebins). 
 
-# Usage
+# Install & Usage
 Download the Dockerfile, then create the required config files in the same directory as the Dockerfile.
 
 `token.txt`: contains your bot account token
@@ -14,6 +14,12 @@ Build the image:
 
 ```
 docker build . -t pastef
+```
+
+Run the container:
+
+```
+docker run -d=true pastef
 ```
 
 Done :)
