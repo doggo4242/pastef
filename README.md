@@ -5,7 +5,7 @@ React with a paperclip to pastebin any codeblocks. React with any pen emoji to f
 
 ## Install
 
-Download the Dockerfile, then create the required config files in the same directory as the Dockerfile.
+Clone the repo, then create the required config files in the same directory as the Dockerfile.
 
 `token.txt`: contains your bot account token
 
