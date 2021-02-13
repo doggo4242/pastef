@@ -8,7 +8,7 @@ def bstr_to_str(str_lst):
 
 def format(code,ext):
 #	code=code.replace('\'','\\\'')
-	clang = ['c','cpp','java','cs','objc','protobuf']
+	clang = ['c','cpp','java','cs','objc','protobuf','objectivec','csharp','c++','h','hpp','pb']
 	prettier = ['js','javascript','ts','typescript','css','html','json','yaml','jsx','php']
 	cmd = None
 	if ext in clang:
