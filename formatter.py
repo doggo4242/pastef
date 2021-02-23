@@ -1,43 +1,32 @@
 import subprocess
 
-def bstr_to_str(str_lst):
-	final=[]
-	for i in str_lst:
-		final.append(i.decode('utf-8'))
-	return ''.join(final)
-
 def format(code,ext):
-#	code=code.replace('\'','\\\'')
-	clang = ['c','cpp','java','cs','objc','protobuf','objectivec','csharp','c++','h','hpp','pb']
+	# clang-format languages
+	clang = ['c','cpp','java','cs','objc','protobuf','objectivec','csharp','c++','h','hpp','pb','obj-c']
+	# prettier languages
 	prettier = ['js','javascript','ts','typescript','css','html','json','yaml','jsx','php']
-	cmd = None
+	# single-purpose formatters
+	cmds = {'kt':['ktlint','--stdin','-F'],'kotlin':['ktlint','--stdin','-F'],
+		'py':'yapf','python':'yapf','rs':'rustfmt','rust':'rustfmt',
+		'hs':'ormolu','haskell':'ormolu','lua':'lua-format',
+		'x86asm':'asmfmt','armasm':'asmfmt','go':'gofmt',
+		'rb':'rufo','ruby':'rufo'}
+	cmd = cmds.get(ext)
 	if ext in clang:
 		cmd='clang-format'
-	elif ext in prettier:
+	elif ext in prettier or ext[:3] == 'php':
 		if ext == 'js' or ext == 'javascript' or ext == 'jsx':
 			ext='babel'
 		elif ext == 'ts':
 			ext='typescript'
+		elif ext[:3] == 'php': # deal with php versions
+			ext='php'
 		cmd=['npx', 'prettier','--parser',ext]
-	elif ext == 'kt' or ext == 'kotlin':
-		cmd=['ktlint','--stdin','-F']
-	elif ext == 'py' or ext == 'python':
-		cmd='yapf'
-	elif ext == 'rs' or ext == 'rust':
-		cmd='rustfmt'
-	elif ext == 'hs' or ext == 'haskell':
-		cmd='ormolu'
-	elif ext == 'lua':
-		cmd='lua-format'
-	elif ext == 'x86asm' or ext == 'armasm':
-		cmd='asmfmt'
-	elif ext == 'go':
-		cmd='gofmt'
-	elif ext == 'rb' or ext == 'ruby':
-		cmd='rufo'
-	else:
-		print('exiting')
+	elif cmd == None:
+		# not supported, return plain code
 		return code
+	# run the formatter
 	res=subprocess.Popen(cmd,stdout=subprocess.PIPE,stdin=subprocess.PIPE)
+	# send code to stdin
 	res=res.communicate(input=code.encode('utf-8'))[0]
 	return res
