@@ -16,7 +16,7 @@ Clone the repo, then create the required config files in the same directory as t
 Build the image:
 
 ```
-docker build . -t pastef
+docker build -t pastef .
 ```
 
 Run the container:
@@ -32,7 +32,7 @@ Done :)
 After editing the config, you will need to rebuild the image.
 
 ```
-docker build . -t pastef --no-cache
+docker build --no-cache -t pastef .
 ```
 
 Then run the container:
