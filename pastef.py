@@ -70,13 +70,13 @@ async def on_reaction_add(reaction,user):
 	await reaction.message.reply(''.join(msg),mention_author=False)
 
 # read in config data & start
-with open('channels.json') as f:
+with open('/etc/pastef/channels.json') as f:
 	channels=json.loads(f.read())
 
-with open('whitelist.txt') as f:
+with open('/etc/pastef/whitelist.txt') as f:
 	roles=f.read().splitlines()
 
-with open('token.txt') as f:
+with open('/etc/pastef/token.txt') as f:
 	token=f.read()
 
 client.run(token)
