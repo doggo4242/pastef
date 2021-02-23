@@ -9,7 +9,7 @@ Clone the repo, then create the required config files in the same directory as t
 
 `token.txt`: contains your bot account token
 
-`whitelist.txt`: contains role ids of roles whose messages should be ignored by the bot.
+`whitelist.txt`: contains role ids of roles whose messages should be ignored by the bot. Separate ids with newlines.
 
 `channels.json`: contains a dict of json keys/values where the key is the channel id (as a string) of the channels the bot should be active in, and the value is the backup language specifier (accepts discord codeblock specifiers). Put "" for the key if you would not like to use backup language specification.
 
@@ -26,6 +26,20 @@ docker run -d=true pastef
 ```
 
 Done :)
+
+## Editing the config
+
+After editing the config, you will need to rebuild the image.
+
+```
+docker build . -t pastef --no-cache
+```
+
+Then run the container:
+
+```
+docker run -d=true pastef
+```
 
 ## Troubleshooting
 
