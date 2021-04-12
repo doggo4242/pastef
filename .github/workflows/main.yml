@@ -21,7 +21,7 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    container: 'alpine:latest'
+    container: 'alpine:edge'
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -35,7 +35,7 @@ jobs:
           apk --no-cache upgrade
           apk --no-cache add gcc python3-dev musl-dev binutils go cmake make alpine-sdk git g++ curl rust yaml-cpp-dev ninja wget
           mkdir $GITHUB_WORKSPACE/formatters
-          cp /usr/bin/rustfmt $GITHUB_WORKSPACE/formatters
+          cp $(which rustfmt) $GITHUB_WORKSPACE/formatters
           cp $(which gofmt) $GITHUB_WORKSPACE/formatters
           go get -u github.com/klauspost/asmfmt/cmd/asmfmt
           cp $(which asmfmt) $GITHUB_WORKSPACE/formatters
