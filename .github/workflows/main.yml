@@ -48,7 +48,7 @@ jobs:
           cd LuaFormatter
           git submodule update --init --recursive
           cmake -GNinja .
-          ninja -j75
+          ninja -j203
           cp lua-format $GITHUB_WORKSPACE/formatters
           cd $GITHUB_WORKSPACE
           rm -rf LuaFormatter
