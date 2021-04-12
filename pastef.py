@@ -4,6 +4,7 @@ import requests
 import json
 import re
 import formatter
+import os
 
 client = discord.Client()
 # key: channels to run in. value: default formatter if not specified
@@ -35,7 +36,7 @@ async def on_reaction_add(reaction,user):
 	await reaction.remove(user)
 	# remove oldest message if dict size >= 200
 	if len(lastMsgs) >= 200:
-		del lastMsgs[next(iter(lastMsgs.keys()))]
+		del lastMsgs[next(iter(lastMsgs))]
 	# if message has been binned/formatted before
 	if lastMsgs.get(str(reaction.message.id)) != None:
 		last = lastMsgs.get(str(reaction.message.id))
@@ -76,7 +77,6 @@ with open('/etc/pastef/channels.json') as f:
 with open('/etc/pastef/whitelist.txt') as f:
 	roles=f.read().splitlines()
 
-with open('/etc/pastef/token.txt') as f:
-	token=f.read()
+token = os.getenv('TOKEN')
 
 client.run(token)
