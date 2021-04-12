@@ -37,7 +37,7 @@ jobs:
           mkdir $GITHUB_WORKSPACE/formatters
           cp $(which rustfmt) $GITHUB_WORKSPACE/formatters
           cp $(which gofmt) $GITHUB_WORKSPACE/formatters
-          go get -u github.com/klauspost/asmfmt/cmd/asmfmt
+          go get -u github.com/klauspost/asmfmt/cmd/asmfmt | cat -
           export GOPATH=$(go env | grep GOPATH | cut -d= -f2 | tr -d \")
           export PATH=$PATH:$GOPATH/bin
           cp $(which asmfmt) $GITHUB_WORKSPACE/formatters
