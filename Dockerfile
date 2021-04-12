@@ -1,4 +1,5 @@
 FROM alpine:edge
+RUN mkdir /etc/pastef
 COPY whitelist.txt /etc/pastef/whitelist.txt
 COPY channels.json /etc/pastef/channels.json
 COPY requirements.txt /etc/pastef/requirements.txt
