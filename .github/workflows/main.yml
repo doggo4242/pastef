@@ -34,22 +34,22 @@ jobs:
           apk update
           apk --no-cache upgrade
           apk --no-cache add gcc python3-dev musl-dev binutils go cmake make alpine-sdk git g++ curl rust yaml-cpp-dev ninja wget
-          mkdir /github/workspace/formatters
-          cp $(which rustfmt) /github/workspace/formatters
-          cp $(which gofmt) /github/workspace/formatters
+          mkdir $GITHUB_WORKSPACE/formatters
+          cp $(which rustfmt) $GITHUB_WORKSPACE/formatters
+          cp $(which gofmt) $GITHUB_WORKSPACE/formatters
           go get -u github.com/klauspost/asmfmt/cmd/asmfmt
-          cp $(which asmfmt) /github/workspace/formatters
-          curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | grep "ormolu-Linux" | cut -d : -f 2,3 | tr -d \" | wget -qi -O /github/workspace/formatters/ormolu -
-          cd /github/workspace
+          cp $(which asmfmt) $GITHUB_WORKSPACE/formatters
+          curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | grep "ormolu-Linux" | cut -d : -f 2,3 | tr -d \" | wget -qi -O $GITHUB_WORKSPACE/formatters/ormolu -
+          cd $GITHUB_WORKSPACE/formatters
           git clone https://Koihik/LuaFormatter.git
           cd LuaFormatter
           git submodule update --init --recursive
           cmake -GNinja .
           ninja -j20
-          cp lua-format /github/workspace/formatters
-          cd /github/workspace
+          cp lua-format $GITHUB_WORKSPACE/formatters
+          cd $GITHUB_WORKSPACE/formatters
           rm -rf LuaFormatter
-          curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | grep ktlint | cut -d : -f 2,3 | tr -d \" | wget -qi -O /github/workspace/formatters/ktlint -
+          curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | grep ktlint | cut -d : -f 2,3 | tr -d \" | wget -qi -O $GITHUB_WORKSPACE/formatters/ktlint -
           tar -czvf formatters.tar.gz formatters
           rm -rf formatters
       - uses: actions/upload-artifact@v2
