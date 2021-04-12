@@ -34,12 +34,12 @@ jobs:
           apk update
           apk --no-cache upgrade
           apk --no-cache add gcc musl-dev binutils go cmake make alpine-sdk git g++ curl rust ninja wget
-          export GOPATH=$(go env | grep GOPATH | cut -d= -f2 | tr -d \")
-          export PATH=$PATH:$GOPATH/bin
           mkdir $GITHUB_WORKSPACE/formatters
           cp $(which rustfmt) $GITHUB_WORKSPACE/formatters
           cp $(which gofmt) $GITHUB_WORKSPACE/formatters
           go get -u github.com/klauspost/asmfmt/cmd/asmfmt
+          export GOPATH=$(go env | grep GOPATH | cut -d= -f2 | tr -d \")
+          export PATH=$PATH:$GOPATH/bin
           cp $(which asmfmt) $GITHUB_WORKSPACE/formatters
           curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | grep "ormolu-Linux" | cut -d : -f 2,3 | tr -d \" | wget -qi -O $GITHUB_WORKSPACE/formatters/ormolu -
           cd $GITHUB_WORKSPACE/formatters
