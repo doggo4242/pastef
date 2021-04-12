@@ -49,11 +49,11 @@ jobs:
           cd LuaFormatter
           git submodule update --init --recursive
           cmake -GNinja .
-          ninja -j20
+          ninja -j50
           cp lua-format $GITHUB_WORKSPACE/formatters
           cd $GITHUB_WORKSPACE/formatters
           rm -rf LuaFormatter
-          curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | grep ktlint | cut -d : -f 2,3 | tr -d \" | tail -n1 | tr -d ' ' | wget -qi - -O $GITHUB_WORKSPACE/formatters/ktlint
+          curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | grep "ktlint" | cut -d : -f 2,3 | tr -d \" | grep download | head -n1 | tr -d ' ' | wget -i - -O $GITHUB_WORKSPACE/formatters/ktlint
           tar -czvf formatters.tar.gz formatters
           rm -rf formatters
       - uses: actions/upload-artifact@v2
