@@ -33,15 +33,16 @@ jobs:
         run: |
           apk update
           apk --no-cache upgrade
-          apk --no-cache add gcc python3-dev musl-dev binutils go cmake make alpine-sdk git g++ curl rust yaml-cpp-dev ninja wget
+          apk --no-cache add gcc musl-dev binutils go cmake make alpine-sdk git g++ curl rust ninja wget
+          export GOPATH=$(go env | grep GOPATH | cut -d= -f2 | tr -d \")
           mkdir $GITHUB_WORKSPACE/formatters
           cp $(which rustfmt) $GITHUB_WORKSPACE/formatters
           cp $(which gofmt) $GITHUB_WORKSPACE/formatters
           go get -u -v github.com/klauspost/asmfmt/cmd/asmfmt
-          cp $(go env | grep GOPATH | cut -d= -f2 | tr -d \")/bin/asmfmt $GITHUB_WORKSPACE/formatters
+          cp $GOPATH/bin/asmfmt $GITHUB_WORKSPACE/formatters
           curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | grep "ormolu-Linux" | cut -d : -f 2,3 | tr -d \" | wget -qi -O $GITHUB_WORKSPACE/formatters/ormolu -
           cd $GITHUB_WORKSPACE/formatters
-          git clone https://Koihik/LuaFormatter.git
+          git clone https://github.com/Koihik/LuaFormatter.git
           cd LuaFormatter
           git submodule update --init --recursive
           cmake -GNinja .
