@@ -38,7 +38,7 @@ jobs:
           cp $(which rustfmt) $GITHUB_WORKSPACE/formatters
           cp $(which gofmt) $GITHUB_WORKSPACE/formatters
           go get -u github.com/klauspost/asmfmt/cmd/asmfmt
-          cp $GOPATH/bin/asmfmt $GITHUB_WORKSPACE/formatters
+          cp /go/bin/asmfmt $GITHUB_WORKSPACE/formatters
           curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | grep "ormolu-Linux" | cut -d : -f 2,3 | tr -d \" | wget -qi -O $GITHUB_WORKSPACE/formatters/ormolu -
           cd $GITHUB_WORKSPACE/formatters
           git clone https://Koihik/LuaFormatter.git
