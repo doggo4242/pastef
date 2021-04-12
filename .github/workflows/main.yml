@@ -40,8 +40,8 @@ jobs:
           go get -u github.com/klauspost/asmfmt/cmd/asmfmt
           export GOPATH=$(go env | grep GOPATH | cut -d= -f2 | tr -d \")
           export PATH=$PATH:$GOPATH/bin
-          echo here
           cp $(which asmfmt) $GITHUB_WORKSPACE/formatters
+          echo here
           curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | grep "ormolu-Linux" | cut -d : -f 2,3 | tr -d \" | wget -qi -O $GITHUB_WORKSPACE/formatters/ormolu -
           cd $GITHUB_WORKSPACE/formatters
           git clone https://github.com/Koihik/LuaFormatter.git
