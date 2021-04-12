@@ -42,8 +42,9 @@ jobs:
           export PATH=$PATH:$GOPATH/bin
           cp $(which asmfmt) $GITHUB_WORKSPACE/formatters
           echo here
-          curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | grep "ormolu-Linux" | cut -d : -f 2,3 | tr -d \" | wget -qi -O $GITHUB_WORKSPACE/formatters/ormolu -
+          curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | grep "ormolu-Linux" | cut -d : -f 2,3 | tr -d \" | tail -n1 | tr -d ' ' | wget -qi - -O $GITHUB_WORKSPACE/formatters/ormolu
           cd $GITHUB_WORKSPACE/formatters
+          chmod +x ormolu
           git clone https://github.com/Koihik/LuaFormatter.git
           cd LuaFormatter
           git submodule update --init --recursive
@@ -52,7 +53,7 @@ jobs:
           cp lua-format $GITHUB_WORKSPACE/formatters
           cd $GITHUB_WORKSPACE/formatters
           rm -rf LuaFormatter
-          curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | grep ktlint | cut -d : -f 2,3 | tr -d \" | wget -qi -O $GITHUB_WORKSPACE/formatters/ktlint -
+          curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | grep ktlint | cut -d : -f 2,3 | tr -d \" | tail -n1 | tr -d ' ' | wget -qi - -O $GITHUB_WORKSPACE/formatters/ktlint
           tar -czvf formatters.tar.gz formatters
           rm -rf formatters
       - uses: actions/upload-artifact@v2
