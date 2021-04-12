@@ -40,7 +40,6 @@ jobs:
           mkdir -p $GITHUB_WORKSPACE/go
           export GOPATH=$GITHUB_WORKSPACE/go
           go get -u github.com/klauspost/asmfmt/cmd/asmfmt
-          find / -name "asmfmt"
           cp $GOPATH/bin/asmfmt $GITHUB_WORKSPACE/formatters
           rm -rf $GOPATH
           curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | grep "ormolu-Linux" | cut -d : -f 2,3 | tr -d \" | wget -qi -O $GITHUB_WORKSPACE/formatters/ormolu -
