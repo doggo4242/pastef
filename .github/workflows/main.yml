@@ -41,21 +41,20 @@ jobs:
           export GOPATH=$(go env | grep GOPATH | cut -d= -f2 | tr -d \")
           export PATH=$PATH:$GOPATH/bin
           cp $(which asmfmt) $GITHUB_WORKSPACE/formatters
-          echo here
           curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | grep "ormolu-Linux" | cut -d : -f 2,3 | tr -d \" | tail -n1 | tr -d ' ' | wget -qi - -O $GITHUB_WORKSPACE/formatters/ormolu
-          cd $GITHUB_WORKSPACE/formatters
+          cd $GITHUB_WORKSPACE
           chmod +x ormolu
           git clone https://github.com/Koihik/LuaFormatter.git
           cd LuaFormatter
           git submodule update --init --recursive
           cmake -GNinja .
-          ninja -j50
+          ninja -j75
           cp lua-format $GITHUB_WORKSPACE/formatters
-          cd $GITHUB_WORKSPACE/formatters
+          cd $GITHUB_WORKSPACE
           rm -rf LuaFormatter
           curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | grep "ktlint" | cut -d : -f 2,3 | tr -d \" | grep download | head -n1 | tr -d ' ' | wget -i - -O $GITHUB_WORKSPACE/formatters/ktlint
-          tar -czvf formatters.tar.gz formatters
-          rm -rf formatters
+          tar -czvf $GITHUB_WORKSPACE/formatters.tar.gz $GITHUB_WORKSPACE/formatters
+          rm -rf $GITHUB_WORKSPACE/formatters
       - uses: actions/upload-artifact@v2
         with:
           name: formatters.tar.gz
