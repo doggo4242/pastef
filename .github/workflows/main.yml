@@ -53,6 +53,7 @@ jobs:
           cd $GITHUB_WORKSPACE
           rm -rf LuaFormatter
           curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | grep "ktlint" | cut -d : -f 2,3 | tr -d \" | grep download | head -n1 | tr -d ' ' | wget -qi - -O $GITHUB_WORKSPACE/formatters/ktlint
+          chmod +x $GITHUB_WORKSPACE/formatters/ktlint
           tar -czvf $GITHUB_WORKSPACE/formatters.tar.gz $GITHUB_WORKSPACE/formatters
           rm -rf $GITHUB_WORKSPACE/formatters
       - uses: actions/upload-artifact@v2
