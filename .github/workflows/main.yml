@@ -41,7 +41,7 @@ jobs:
           export GOPATH=$(go env | grep GOPATH | cut -d= -f2 | tr -d \")
           export PATH=$PATH:$GOPATH/bin
           cp $(which asmfmt) $GITHUB_WORKSPACE/formatters
-          while read i; do if grep 'Linux' <<< "$(jq -r '.name' <<< $i)" >/dev/null; then echo $(jq -r '.browser_download_url' <<< "$i");fi done <<< "$(curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | jq -c '.assets[]')" | curl -L -s -o $GITHUB_WORKSPACE/formatters/ormolu $(</dev/fd/0)
+          curl -L -s -o $GITHUB_WORKSPACE/formatters/ormolu $(echo "$(curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | jq -c '.assets[]')" | while read i; do if echo "$(echo $i | jq -r '.name')" | grep 'Linux' >/dev/null; then echo $(echo $i | jq -r '.browser_download_url');fi done)
           chmod +x $GITHUB_WORKSPACE/formatters/ormolu
           cd $GITHUB_WORKSPACE
           git clone https://github.com/Koihik/LuaFormatter.git
@@ -51,7 +51,7 @@ jobs:
           ninja -j75
           cp lua-format $GITHUB_WORKSPACE/formatters`
           cd $GITHUB_WORKSPACE
-          while read i; do if [ "$(jq -r '.name' <<< $i)" == "ktlint" ]; then echo $(jq -r '.browser_download_url' <<< "$i");fi done <<< "$(curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | jq -c '.assets[]')" | curl -L -s -o $GITHUB_WORKSPACE/formatters/ktlint $(</dev/fd/0)
+          curl -L -s -o $GITHUB_WORKSPACE/formatters/ktlint $(echo "$(curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | jq -c '.assets[]')" | while read i; do if [ "$(echo $i | jq -r '.name')" == "ktlint" ]; then echo $(echo $i | jq -r '.browser_download_url');fi done)
           chmod +x $GITHUB_WORKSPACE/formatters/ktlint
           tar -czvf $GITHUB_WORKSPACE/formatters.tar.gz $GITHUB_WORKSPACE/formatters
           sha256sum $GITHUB_WORKSPACE/formatters.tar.gz > $GITHUB_WORKSPACE/formatters.sha2
