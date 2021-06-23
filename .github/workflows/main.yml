@@ -43,6 +43,8 @@ jobs:
           cp $(which asmfmt) $GITHUB_WORKSPACE/formatters
           curl -L -s -o $GITHUB_WORKSPACE/formatters/ormolu $(echo "$(curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | jq -c '.assets[]')" | while read i; do if echo "$(echo $i | jq -r '.name')" | grep 'Linux' >/dev/null; then echo $(echo $i | jq -r '.browser_download_url');fi done)
           chmod +x $GITHUB_WORKSPACE/formatters/ormolu
+          curl -L -s -o $GITHUB_WORKSPACE/formatters/ktlint $(echo "$(curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | jq -c '.assets[]')" | while read i; do if [ "$(echo $i | jq -r '.name')" == "ktlint" ]; then echo $(echo $i | jq -r '.browser_download_url');fi done)
+          chmod +x $GITHUB_WORKSPACE/formatters/ktlint
           cd $GITHUB_WORKSPACE
           git clone https://github.com/Koihik/LuaFormatter.git
           cd LuaFormatter
@@ -51,8 +53,6 @@ jobs:
           ninja -j75
           cp lua-format $GITHUB_WORKSPACE/formatters`
           cd $GITHUB_WORKSPACE
-          curl -L -s -o $GITHUB_WORKSPACE/formatters/ktlint $(echo "$(curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | jq -c '.assets[]')" | while read i; do if [ "$(echo $i | jq -r '.name')" == "ktlint" ]; then echo $(echo $i | jq -r '.browser_download_url');fi done)
-          chmod +x $GITHUB_WORKSPACE/formatters/ktlint
           tar -czvf $GITHUB_WORKSPACE/formatters.tar.gz $GITHUB_WORKSPACE/formatters
           sha256sum $GITHUB_WORKSPACE/formatters.tar.gz > $GITHUB_WORKSPACE/formatters.sha2
       - uses: actions/upload-artifact@v2
