@@ -33,7 +33,7 @@ jobs:
         run: |
           apk update
           apk --no-cache upgrade
-          apk --no-cache add gcc musl-dev binutils go cmake make alpine-sdk git g++ curl rust ninja wget
+          apk --no-cache add gcc musl-dev binutils go cmake make alpine-sdk git g++ curl rust ninja python3
           mkdir $GITHUB_WORKSPACE/formatters
           cp $(which rustfmt) $GITHUB_WORKSPACE/formatters
           cp $(which gofmt) $GITHUB_WORKSPACE/formatters
@@ -41,23 +41,25 @@ jobs:
           export GOPATH=$(go env | grep GOPATH | cut -d= -f2 | tr -d \")
           export PATH=$PATH:$GOPATH/bin
           cp $(which asmfmt) $GITHUB_WORKSPACE/formatters
-          curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | grep "ormolu-Linux" | cut -d : -f 2,3 | tr -d \" | tail -n1 | tr -d ' ' | wget -qi - -O $GITHUB_WORKSPACE/formatters/ormolu
+          curl -s "https://api.github.com/repos/tweag/ormolu/releases/latest" | python3 -c 'import sys,json;d=json.load(sys.stdin);print([i["browser_download_url"] for i in d["assets"] if "linux" in i["name"].lower()][0],end="")' | curl -L -s -o $GITHUB_WORKSPACE/formatters/ormolu $(</dev/fd/0)
           chmod +x $GITHUB_WORKSPACE/formatters/ormolu
           cd $GITHUB_WORKSPACE
           git clone https://github.com/Koihik/LuaFormatter.git
           cd LuaFormatter
           git submodule update --init --recursive
-          cmake -GNinja .
+          cmake -GNinja -DBUILD_TESTS=OFF -DCOVERAGE=OFF .
           ninja -j75
-          cp lua-format $GITHUB_WORKSPACE/formatters
+          cp lua-format $GITHUB_WORKSPACE/formatters`
           cd $GITHUB_WORKSPACE
-          rm -rf LuaFormatter
-          curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | grep "ktlint" | cut -d : -f 2,3 | tr -d \" | grep download | head -n1 | tr -d ' ' | wget -qi - -O $GITHUB_WORKSPACE/formatters/ktlint
+          curl -s "https://api.github.com/repos/pinterest/ktlint/releases/latest" | python3 -c 'import sys,json;d=json.load(sys.stdin);print([i["browser_download_url"] for i in d["assets"] if i["name"]=="ktlint"][0],end="")' | curl -L -s -o $GITHUB_WORKSPACE/formatters/ktlint $(</dev/fd/0)
           chmod +x $GITHUB_WORKSPACE/formatters/ktlint
           tar -czvf $GITHUB_WORKSPACE/formatters.tar.gz $GITHUB_WORKSPACE/formatters
-          rm -rf $GITHUB_WORKSPACE/formatters
+          sha256sum $GITHUB_WORKSPACE/formatters.tar.gz > $GITHUB_WORKSPACE/formatters.sha2
       - uses: actions/upload-artifact@v2
         with:
           name: formatters.tar.gz
           path: formatters.tar.gz
-          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: formatters.sha2
+          path: formatters.sha2
